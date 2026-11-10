@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/JobDemo.Api/JobDemo.Api.csproj" />
+    <Project Path="src/JobDemo.AppHost/JobDemo.AppHost.csproj" />
+    <Project Path="src/JobDemo.ServiceDefaults/JobDemo.ServiceDefaults.csproj" />
+  </Folder>
+</Solution>
