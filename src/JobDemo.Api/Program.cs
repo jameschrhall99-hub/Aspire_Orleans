@@ -1,39 +1,33 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.AddServiceDefaults();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.MapDefaultEndpoints();
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/info", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    app.Logger.LogInformation(
+        "Information endpoint requested for {ServiceName} in {EnvironmentName}",
+        "JobDemo.Api",
+        app.Environment.EnvironmentName);
+
+    return TypedResults.Ok(new
+    {
+        service = "JobDemo.Api",
+        milestone = 1,
+        environment = app.Environment.EnvironmentName,
+        timestampUtc = DateTimeOffset.UtcNow
+    });
 })
-.WithName("GetWeatherForecast");
+.WithName("GetInfo")
+.WithSummary("Returns basic information about the running API.");
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

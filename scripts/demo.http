@@ -1,0 +1,15 @@
+@baseUrl = http://localhost:5132
+
+### Application information
+GET {{baseUrl}}/info
+Accept: application/json
+
+### Readiness checks
+GET {{baseUrl}}/health
+
+### Liveness checks
+GET {{baseUrl}}/alive
+
+### OpenAPI document
+GET {{baseUrl}}/openapi/v1.json
+Accept: application/json
